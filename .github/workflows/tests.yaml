@@ -1,30 +1,15 @@
-name: Tests on push
-
-on:
-  push:
-    branches:
-      - master
-      - development
-  pull_request:
-    branches:
-      - master
-      - development
-
+name: test-my-app
+on: [push, pull_request]
 jobs:
-  test:
-    runs-on: macOS-latest
-
+  drive:
+    runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: futureware-tech/simulator-action@v3
-        with:
-          model: 'iPhone 14'
-
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-
-      - run: flutter pub get
-      - run: flutter test integration_test
-      - run: flutter test
+    - uses: actions/checkout@v1
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'beta'
+    - run: flutter pub get
+    - run: |
+           flutter config --enable-windows-desktop
+           flutter test -d windows integration_test/app_test.dart
+    - run: flutter test
